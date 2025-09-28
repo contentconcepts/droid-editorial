@@ -20,7 +20,7 @@ export async function GET() {
     // Test database connection
     await db.pool.query("SELECT 1");
     health.services.database = "connected";
-  } catch (error) {
+  } catch {
     health.services.database = "error";
     health.status = "degraded";
   }
@@ -30,7 +30,7 @@ export async function GET() {
     const razorpay = getRazorpayClient();
     await razorpay.orders.fetch("dummy");
     health.services.razorpay = "connected";
-  } catch (error) {
+  } catch (error: any) {
     // Expected to fail with dummy ID, but connection works
     if (error.message?.includes("No such order")) {
       health.services.razorpay = "connected";
@@ -45,18 +45,18 @@ export async function GET() {
     const resend = getResendClient();
     await resend.domains.list();
     health.services.resend = "connected";
-  } catch (error) {
+  } catch {
     health.services.resend = "error";
     health.status = "degraded";
   }
 
   try {
     // Test Blob storage
-    const testBlob = await put("health-check.txt", "test", {
+    await put("health-check.txt", "test", {
       access: "public",
     });
     health.services.blob = "connected";
-  } catch (error) {
+  } catch {
     health.services.blob = "error";
     health.status = "degraded";
   }
