@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: light;
+}
+
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@layer base {
+  body {
+    @apply min-h-screen bg-slate-50 text-slate-900;
+  }
+  ::selection {
+    @apply bg-indigo-200 text-indigo-900;
+  }
+}
